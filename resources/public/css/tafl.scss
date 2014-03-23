@@ -1,0 +1,100 @@
+
+$board-size: 684px;
+$cell-size: 60px;
+
+$primary-bg: #ddd;
+$alternate-bg: #eee;
+
+$center-castle-color: #55ff55;
+$escape-castle-color: #5555ff;
+
+$defender-color: #ababab;
+$attacker-color: #121212;
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: #eee;
+    font-family: monospace;
+}
+
+@mixin castle($color) {
+  &:before {
+    content: "";
+    position: absolute;
+    height: 0;
+    width: 0;
+    border: 30px solid transparent;
+    border-top-width: 0;
+    border-bottom: 60px solid $color;
+  }
+}
+
+@mixin warrior($color) {
+  &:after {
+    content: "";
+    position: absolute;
+    height: 0;
+    width: 0;
+    border: 30px solid $color;
+    border-radius: 30px;
+  }
+}
+
+@mixin king($color) {
+  &:after {
+    content: "";
+    position: absolute;
+    height: 45px;
+    width: 45px;
+    margin: 7.5px;
+    background-color: $color;
+    border-radius: none;
+  }
+}
+
+.board-container {
+  padding: 30px;
+}
+
+.board {
+  background: $primary-bg;
+  height: $board-size;
+  width: $board-size;
+  margin: 0 auto;
+}
+
+.row:nth-child(odd) > .cell:nth-child(odd),
+.row:nth-child(even) > .cell:nth-child(even) {
+  background: $alternate-bg;
+}
+
+.cell {
+  display: inline-block;
+  width: $cell-size;
+  height: $cell-size;
+  border: 1px solid #000;
+}
+
+.castle {
+  @include castle($escape-castle-color);
+
+  &.center {
+    @include castle($center-castle-color);
+  }
+}
+
+.attacker {
+  @include warrior($attacker-color);
+}
+
+.defender:not(.king) {
+  @include warrior($defender-color);
+}
+
+.king {
+  @include king($defender-color);
+}
